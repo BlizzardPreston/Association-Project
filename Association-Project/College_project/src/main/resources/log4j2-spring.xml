@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--参考文献: log日志认知 https://blog.csdn.net/RyanDon/article/details/82589989-->
+<!--参考文献: 输出格式 https://blog.csdn.net/weixin_33674976/article/details/92379988-->
+<!--参考文献: 输出格式 https://www.cnblogs.com/angleBlue/p/4769234.html-->
+<!--参考文献: 自动生成日志策略 https://blog.csdn.net/zhang168/article/details/46814489-->
+<!--2.10版本以后，Log4j2默认关闭了Jansi（一个支持输出ANSI颜色的类库） 要看彩色日志就要加启动参数 -Dlog4j.skipJansi=false -->
+<!--log级别： FATAL 致命> ERROR 错误> WARN 警告> INFO 信息> DEBUG 调试> TRACE 追踪 -->
+<!-- 异步支持 需要引入disruptor-3.0.0.jar或者更高的版本。
+异步日志分为两种：
+a.全异步模式
+这种异步日志方式，不需要修改修改原理的配置文件，Logger仍然使用<root> and <logger>
+只需要在主程序代码开头，加一句系统属性的代码：
+System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
+b.异步和非异步混合输出模式
+ 在配置文件中Logger使用<AsyncAppender> or <AsyncLogger>
+ Log4j2中的异步日志实现方式有AsyncAppender和AsyncLogger两种。
+其中，AsyncAppender采用了ArrayBlockingQueue来保存需要异步输出的日志事件；AsyncLogger则使用了Disruptor框架来实现高吞吐
+     -->
+<Configuration status="WARN">
+    <properties>
+        <property name="LOG_HOME">./logs</property>
+        <property name="FILE_NAME">mylog</property>
+        <property name="log.sql.level">debug</property>
+    </properties>
+
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- %d:时间 %p:日志级别 %processId:进程数 %t:进程名 %highlight:突出显示 %c:类全路径 %L:行数 %msg:信息 %n: 换行-->
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %processId --- [%t] %highlight{%-40c{1.1}} :%-4L - %msg%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/${FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %processId --- [%t] %-40c{1.1} :%-4L - %msg%n"/>
+            <!-- 生成策略 -->
+            <Policies>
+                <!-- 基于时间的触发Rolling策略,关键点在于 filePattern后的日期格式，以及TimeBasedTriggeringPolicy的interval，日期格式精确到哪一位，interval也精确到哪一个单位-->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!-- 基于文件大小的触发Rolling策略,单位(这个配置需要和filePattern结合使用)-->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <!-- 如果不做配置，默认是7，这个7指的是上面i的最大值，超过了就会覆盖之前的 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </Root>
+        <!-- AsyncLogger采用异步  -->
+        <AsyncLogger name="com.association" level="debug" additivity="false" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </AsyncLogger>
+        <!-- 打印dao层 sql跟踪信息  -->
+        <AsyncLogger name="com.association.common.Dao" level="${log.sql.level}" additivity="false" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </AsyncLogger>
+        <!--swagger 初始化抛异常信息-->
+        <AsyncLogger name="io.swagger.models.parameters.AbstractSerializableParameter" level="error" additivity="false" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </AsyncLogger>
+    </Loggers>
+</Configuration>

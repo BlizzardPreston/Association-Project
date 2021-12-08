@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.association.common.Dao.RecruitDao">
+    <insert id="isWriteRecruit" parameterType="com.association.common.entity.Recruit">
+    insert into recruit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recruitID != null">
+                recruitID,
+            </if>
+            <if test="studentID != null">
+                studentID,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="text != null">
+                text,
+            </if>
+            <if test="imgURL != null">
+                imgURL,
+            </if>
+            <if test="datetime != null">
+                dateTime,
+            </if>
+            <if test="isSend != null">
+                isSend,
+            </if>
+            <if test="mycomID != null">
+                mycomID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recruitID != null">
+                #{recruitID,jdbcType=INTEGER},
+            </if>
+            <if test="studentID != null">
+                #{studentID,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="text != null">
+                #{text,jdbcType=VARCHAR},
+            </if>
+            <if test="imgURL != null">
+                #{imgURL,jdbcType=VARCHAR},
+            </if>
+            <if test="datetime != null">
+                #{datetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isSend != null">
+                #{isSend,jdbcType=INTEGER},
+            </if>
+            <if test="mycomID != null">
+                #{mycomID,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="AllRecruitID" resultType="com.association.common.entity.Recruit">
+        select * from recruit
+    </select>
+    <select id="getRecruitByID" resultType="com.association.common.entity.Recruit">
+        select * from recruit where recruitID=#{rid}
+    </select>
+    <delete id="deleteRecruitByRID">
+        delete from recruit where recruitID=#{rid}
+    </delete>
+</mapper>

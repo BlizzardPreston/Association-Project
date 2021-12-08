@@ -1,0 +1,77 @@
+{
+  "groups": [
+    {
+      "name": "redis",
+      "type": "com.association.common.config.cache.PrimaryRedisProperties",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "redis.client-name",
+      "type": "java.lang.String",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.client-type",
+      "type": "org.springframework.boot.autoconfigure.data.redis.RedisProperties$ClientType",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.cluster",
+      "type": "org.springframework.boot.autoconfigure.data.redis.RedisProperties$Cluster",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.connect-timeout",
+      "type": "java.time.Duration",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.database",
+      "type": "java.lang.Integer",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.host",
+      "type": "java.lang.String",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.password",
+      "type": "java.lang.String",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.sentinel",
+      "type": "org.springframework.boot.autoconfigure.data.redis.RedisProperties$Sentinel",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.ssl",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.timeout",
+      "type": "java.time.Duration",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.url",
+      "type": "java.lang.String",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    },
+    {
+      "name": "redis.username",
+      "type": "java.lang.String",
+      "sourceType": "com.association.common.config.cache.PrimaryRedisProperties"
+    }
+  ],
+  "hints": []
+}

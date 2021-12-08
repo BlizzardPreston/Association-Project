@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>社团管理 社团详情</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="ibox ">
+                    <div class="ibox-content text-center">
+                        <h3 class="m-b-xxs">社团详情</h3>
+                    </div>
+                </div>
+                <div id="forlistDiv">
+                </div><!-- forlistdiv -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+
+
+    <!-- 自定义js -->
+    <script src="/js/content.js?v=1.0.0"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //全局变量
+            let publish;
+            let student;
+            $.ajax({
+                type: "POST",
+                url: "/publish/getStudent",
+                // dataType: "text",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data)
+                    student=data.data;
+                    return student;
+                },
+                error: function (data) {
+                    alert("AJAX请求出错" + data);
+                }
+            })
+
+            console.log("显示所有评论")
+            $.ajax({
+                type: "POST",
+                url: "/club/AllClubList",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var list=data.data;
+                    var i = 1;
+                    // $("#clubType").append(data.data.clubInfo);
+                    for (var num=data.data.length;num>0;num--) {
+                        str1 =
+                            '<div class="social-feed-separated"><div class="social-avatar"><a href=""><img alt="image" src="/img/a8.jpg"></a></div><div class="social-feed-box"><div class="pull-right social-action dropdown"><button data-toggle="dropdown" class="dropdown-toggle btn-white"><i class="fa fa-angle-down"></i></button><ul class="dropdown-menu m-t-xs"><li><a href="#">设置</a></li></ul></div><div class="social-avatar">'
+                        usermsg = '<div class="social-avatar">' + '<a href="#" id="username' + i +
+                            '">'+list[num-1].clubName+'</a> <small class="text-muted">' + list[num-1].clubAdmin +
+                            '</small></div>'
+                        text = ' <div class="social-body"><p>' + list[num-1].clubInfo + '</p>'
+                        str2 =
+                            '<div class="btn-group"><button class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i> 赞</button><button class="btn btn-white btn-xs"><i class="fa fa-comments"></i> 评论</button><button class="btn btn-white btn-xs"><i class="fa fa-share"></i> 分享</button></div></div>'
+                        $("#forlistDiv").append(str1 + usermsg + text + str2);
+                        // $("#username" + i).append();
+                        i = i + 1;
+                    }
+                    console.log(data)
+                },
+                error: function (data) {
+                    alert("AJAX请求出错" + data);
+                    console.log(data);
+                }
+            })
+
+
+
+
+
+        })
+    </script>
+    <script type="text/javascript">
+        function getName(studentid){
+            var name;
+            $.ajax({
+                type: "POST",
+                url: "/publish/getStudentByID",
+                // dataType: "text",
+                data:{id:studentid},
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data.data.studentName);
+                    name=data.data.studentName;
+                },
+                error: function (data) {
+                    alert("AJAX请求出错" + data);
+                }  
+            })
+            return name;
+        }
+    </script>
+
+</body>
+
+</html>

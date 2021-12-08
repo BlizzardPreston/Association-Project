@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>社团管理 招新</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="ibox ">
+                    <div class="ibox-content text-center">
+                        <h3 class="m-b-xxs">我的发布</h3>
+                    </div>
+                </div>
+                <div id="forlistDiv">
+                    <!-- <div class="social-feed-separated">
+
+                        <div class="social-avatar">
+                            <a href="">
+                                <img alt="image" src="/img/a8.jpg">
+                            </a>
+                        </div>
+
+                        <div class="social-feed-box">
+
+                            <div class="pull-right social-action dropdown">
+                                <button data-toggle="dropdown" class="dropdown-toggle btn-white">
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu m-t-xs">
+                                    <li><a href="#">设置</a></li>
+                                </ul>
+                            </div>
+                            <div class="social-avatar">
+                                <a href="#" id="publishID">
+                                    尤小右
+                                </a>
+                                <small class="text-muted">8月18日</small>
+                            </div>
+                            <div class="social-body">
+                                <p>
+                                    这次带来【5本
+                                    育
+                                </p>
+                                <div class="btn-group">
+                                    <button class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i> 赞</button>
+                                    <button class="btn btn-white btn-xs"><i class="fa fa-comments"></i> 评论</button>
+                                    <button class="btn btn-white btn-xs"><i class="fa fa-share"></i> 分享</button>
+                                </div>
+                            </div>
+                            <div class="social-footer">
+                                <div class="social-comment">
+                                    <a href="" class="pull-left">
+                                        <img alt="image" src="/img/a3.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <a href="#">
+                                            尤小右
+                                        </a> 是这样的，不过要解决的问题还是那些，只是方法越来越简单越来越强大。
+                                        <br />
+                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 26</a> -
+                                        <small class="text-muted" id="time">8月18日</small>
+                                    </div>
+                                </div>
+
+                                <div class="social-comment">
+                                    <a href="" class="pull-left">
+                                        <img alt="image" src="/img/a1.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <a href="#">
+                                            尤小右
+                                        </a> #粉丝福利#又来了，这次带来【5本 《MEAN
+                                        Web开发》】MEAN是流行的现代Web开发工具的集合，包括MongoDB、Express、AngularJS和Node.js，为现代Web开发提供了一种创新性的方法。
+                                        关注本博并转发，即可参与抽奖
+                                        <br />
+                                        <a href="#" class="small"><i class="fa fa-thumbs-up"></i> 11</a> -
+                                        <small class="text-muted">8月18日</small>
+                                    </div>
+                                </div>
+
+                                <div class="social-comment">
+                                    <a href="" class="pull-left">
+                                        <img alt="image" src="/img/a4.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <textarea class="form-control" placeholder="填写评论..."></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>  -->
+                    <!-- forlistdiv -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+
+
+    <!-- 自定义js -->
+    <script src="/js/content.js?v=1.0.0"></script>
+
+    <script type="text/javascript">
+        function getPublishid(id) {
+            $.ajax({
+                type: "post",
+                url: "http://localhost:8888/publish/deleteByPublishId",
+                data: {
+                    "publishID": id
+                },
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    window.location.reload(true);
+                },
+                error: function (data) {
+                    alert("AJAX请求出错" + data);
+                }
+            })
+        }
+        $(document).ready(function () {
+            //全局变量
+            let publish;
+            let student;
+            $.ajax({
+                type: "POST",
+                url: "/publish/getStudentlocal",
+                // dataType: "text",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data)
+                    student=data.data;
+                    return student;
+                },
+                error: function (data) {
+                    alert("AJAX请求出错" + data);
+                }
+            })
+
+            console.log("显示所有评论")
+            $.ajax({
+                type: "POST",
+                url: "/publish/getAllPublishByidlocal",
+                // dataType: "text",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var list = data.data;
+                    var i = 1;
+                    // $("#clubType").append(data.data.clubInfo);
+                    for (var num= data.data.length; num > 0; num--) {
+                        str1 =
+                            '<div class="social-feed-separated"><div class="social-avatar"><a href=""><img alt="image" src="/img/a8.jpg"></a></div><div class="social-feed-box"><div class="pull-right social-action dropdown"><button data-toggle="dropdown" class="dropdown-toggle btn-white"><i class="fa fa-angle-down"></i></button><ul class="dropdown-menu m-t-xs"><li><a href="#">设置</a></li></ul></div><div class="social-avatar">'
+                        usermsg = '<div class="social-avatar">' + '<a href="#" id="username' + i +
+                            '"></a> <small class="text-muted">' + list[num-1].datetime +
+                            '</small></div>'
+                        text = ' <div class="social-body"><p>' + list[num-1].text + '</p>'
+                        str2 =
+                            '<div class="btn-group"><button class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i> 赞</button><button class="btn btn-white btn-xs"><i class="fa fa-comments"></i> 评论</button><a onclick="getPublishid('+ list[num-1].publishID+')"><button class="btn btn-white btn-xs"><i class="fa fa-trash"></i> 删除</button></a></div></div>'
+                        $("#forlistDiv").append(str1 + usermsg + text + str2);
+                        $("#username" + i).append(student.studentName);
+                        i = i + 1;
+                    }
+                    console.log(data)
+                    return publish;
+                },
+                error: function (data) {
+                    alert("AJAX请求出错" + data);
+                    console.log(data);
+                }
+            })
+
+
+
+
+
+        })
+    </script>
+
+</body>
+
+</html>

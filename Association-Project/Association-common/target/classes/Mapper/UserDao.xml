@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.association.common.Dao.UserDao">
+    <select id="getUserByLogin" resultType="com.association.common.entity.User">
+        select * from user where studentID=#{id} and userPassword=#{pw}
+    </select>
+    <select id="getUserById"  parameterType="java.lang.Long" resultType="com.association.common.entity.User">
+        select * from user where studentID=#{id}
+    </select>
+    <select id="getMapByID" resultType="com.association.common.entity.User">
+        select *
+        from
+                auth a,user u where u.studentID=#{id} and u.authID=a.authID
+    </select>
+    <select id="chackUserAuthInfo" resultType="String">
+        select a.authInfo
+        from
+                auth a,user u where u.studentID=#{id} and u.authID=a.authID
+    </select>
+    <select id="getUserByName" resultType="com.association.common.entity.User">
+        select * from user where userName=#{name}
+    </select>
+    <insert id="addUser" parameterType="com.association.common.entity.User">
+        insert into user(studentID,userName,userPassword,clubID,authID)
+        value(#{studentID},#{userName},#{userPassword},#{clubID},#{authID})
+    </insert>
+<update id="updataClubID">
+    update user set clubID=#{cid},authID=#{auth} where studentID=#{sid}
+</update>
+</mapper>

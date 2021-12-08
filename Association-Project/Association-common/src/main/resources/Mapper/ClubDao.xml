@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.association.common.Dao.ClubDao">
+<select id="getClubById" resultType="com.association.common.entity.Club">
+    select * from club where clubID=#{id};
+</select>
+<select id="getClubNameById" resultType="String">
+    select clubName from club where clubID=#{id};
+</select>
+    <update id="updataClubNum">
+        update club set clubNum=#{num} where clubID=#{cid}
+    </update>
+    <select id="AllClubList" resultType="com.association.common.entity.Club">
+        select * from club
+    </select>
+</mapper>
