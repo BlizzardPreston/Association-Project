@@ -140,7 +140,8 @@ spring:
       # manual_immediate：手动调用Acknowledgment.acknowledge()后立即提交，一般推荐使用这种
       ack-mode: manual_immediate
       concurrency: 10 #并发数
-#      type: batch
+      #开启批量处理
+      type: batch
 
 
 

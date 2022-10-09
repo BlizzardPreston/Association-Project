@@ -28,6 +28,7 @@ spring:
     #    8.135.。。是6380端口
     host: 8.135.112.184
     port: 6380
+#    password: jianziRedis123
     #    ms
     timeout: 5000
     # Redis服务器连接密码（默认为空）
@@ -131,9 +132,7 @@ xinjianchen:
 
 
 
-mybatis:
-  mapper-locations: classpath*:Mapper/*.xml  #配置映射文件
-  type-aliases-package: com.association.emtity #配置实体类
+
 
 #日志相关
 logging:
